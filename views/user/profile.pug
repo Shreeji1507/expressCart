@@ -12,7 +12,7 @@ block content
             ul.list-group
               each item in order.items
                 li.list-group-item #{item.item.title} | #{item.qty}
-                  span.badge=item.price.toFixed(2)      
+                  span.badge="$"+item.price.toFixed(2)      
           .panel-footer
             strong="Total Price: $ "+ order.cart.totalPrice.toFixed(2)
 
