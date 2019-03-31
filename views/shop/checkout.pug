@@ -40,7 +40,41 @@ block content
                         .form-group
                             label(for='card-cvc') CVC
                             input#card-cvc.form-control(type='text', required='')
-                button.btn.btn-success(type='submit') Buy now
-
+                button.btn.btn-success(type='submit') Buy now 
+            br
+            hr
+        .row
+            .col-sm-6.col-md-6.col-md-offset-3.col-sm-offset-3
+                p= 'Or Pay with PayPal'
+                #paypal-button-container   
+    script.
+        paypal.Buttons({
+        createOrder: function(data, actions) {
+        return actions.order.create({
+        purchase_units: [{
+        amount: {
+        value: #{total}
+        }
+        }]
+        });
+        },
+        onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+        alert('Transaction completed by ' + details.payer.name.given_name);
+        // Call your server to save the transaction
+        return fetch('/paypal-transaction-complete', {
+        method: 'post',
+        headers: {
+        'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+        orderID: data.orderID
+        })
+        });
+        });
+        }
+        }).render('#paypal-button-container');
     //- script(type="text/javascript" src="https://js.stripe.com/v2/")
     script(type="text/javascript" src="javascripts/checkout.js")
+
+
