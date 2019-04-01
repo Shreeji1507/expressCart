@@ -37,4 +37,3 @@ function stripeResponseHandler(status, response){
   }
 }
 
-
